@@ -1,0 +1,15 @@
+--- 
+title: "sdmTMB Manual"
+author: "Sean C. Anderson, ..."
+date: "`r Sys.Date()`"
+site: bookdown::bookdown_site
+output: bookdown::gitbook
+documentclass: book
+bibliography: [book.bib]
+biblio-style: apalike
+link-citations: yes
+github-repo: pbs-assess/sdmTMB-manual
+description: "This is a minimal example of using the bookdown package to write a book. The output format for this example is bookdown::gitbook."
+---
+
+# Introduction {#intro}
