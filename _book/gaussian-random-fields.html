@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>Chapter 4 Gaussian random fields | sdmTMB Manual</title>
+<meta name="author" content="Sean C. Anderson, …">
+<meta name="description" content="4.1 Matérn parameterization The Matérn defines the covariance \(\Phi \left( s_j, s_k \right)\) between spatial locations \(s_j\) and \(s_k\) as \[ \Phi\left( s_j,s_k \right) =...">
+<meta name="generator" content="bookdown 0.29 with bs4_book()">
+<meta property="og:title" content="Chapter 4 Gaussian random fields | sdmTMB Manual">
+<meta property="og:type" content="book">
+<meta property="og:description" content="4.1 Matérn parameterization The Matérn defines the covariance \(\Phi \left( s_j, s_k \right)\) between spatial locations \(s_j\) and \(s_k\) as \[ \Phi\left( s_j,s_k \right) =...">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Chapter 4 Gaussian random fields | sdmTMB Manual">
+<meta name="twitter:description" content="4.1 Matérn parameterization The Matérn defines the covariance \(\Phi \left( s_j, s_k \right)\) between spatial locations \(s_j\) and \(s_k\) as \[ \Phi\left( s_j,s_k \right) =...">
+<!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link href="libs/bootstrap-4.6.0/bootstrap.min.css" rel="stylesheet">
+<script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><script src="libs/bs3compat-0.4.0/transition.js"></script><script src="libs/bs3compat-0.4.0/tabs.js"></script><script src="libs/bs3compat-0.4.0/bs3compat.js"></script><link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet">
+<script src="libs/bs4_book-1.0.0/bs4_book.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- CSS --><style type="text/css">
+    
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  </style>
+<style type="text/css">
+    /* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+    div.csl-bib-body { }
+    div.csl-entry {
+      clear: both;
+        }
+    .hanging div.csl-entry {
+      margin-left:2em;
+      text-indent:-2em;
+    }
+    div.csl-left-margin {
+      min-width:2em;
+      float:left;
+    }
+    div.csl-right-inline {
+      margin-left:2em;
+      padding-left:1em;
+    }
+    div.csl-indent {
+      margin-left: 2em;
+    }
+  </style>
+</head>
+<body data-spy="scroll" data-target="#toc">
+
+<div class="container-fluid">
+<div class="row">
+  <header class="col-sm-12 col-lg-3 sidebar sidebar-book"><a class="sr-only sr-only-focusable" href="#content">Skip to main content</a>
+
+    <div class="d-flex align-items-start justify-content-between">
+      <h1>
+        <a href="index.html" title="">sdmTMB Manual</a>
+      </h1>
+      <button class="btn btn-outline-primary d-lg-none ml-2 mt-1" type="button" data-toggle="collapse" data-target="#main-nav" aria-expanded="true" aria-controls="main-nav"><i class="fas fa-bars"></i><span class="sr-only">Show table of contents</span></button>
+    </div>
+
+    <div id="main-nav" class="collapse-lg">
+      <form role="search">
+        <input id="search" class="form-control" type="search" placeholder="Search" aria-label="Search">
+</form>
+
+      <nav aria-label="Table of contents"><h2>Table of contents</h2>
+        <ul class="book-toc list-unstyled">
+<li><a class="" href="index.html"><span class="header-section-number">1</span> Introduction</a></li>
+<li><a class="" href="notation.html"><span class="header-section-number">2</span> Notation conventions</a></li>
+<li><a class="" href="sdmtmb-model-structure.html"><span class="header-section-number">3</span> sdmTMB model structure</a></li>
+<li><a class="active" href="gaussian-random-fields.html"><span class="header-section-number">4</span> Gaussian random fields</a></li>
+<li><a class="" href="observation-model-families.html"><span class="header-section-number">5</span> Observation model families</a></li>
+<li><a class="" href="optimization.html"><span class="header-section-number">6</span> Optimization</a></li>
+<li><a class="" href="references.html">References</a></li>
+</ul>
+
+        <div class="book-extra">
+          
+        </div>
+      </nav>
+</div>
+  </header><main class="col-sm-12 col-md-9 col-lg-7" id="content"><div id="gaussian-random-fields" class="section level1" number="4">
+<h1>
+<span class="header-section-number">4</span> Gaussian random fields<a class="anchor" aria-label="anchor" href="#gaussian-random-fields"><i class="fas fa-link"></i></a>
+</h1>
+<div id="matérn-parameterization" class="section level2" number="4.1">
+<h2>
+<span class="header-section-number">4.1</span> Matérn parameterization<a class="anchor" aria-label="anchor" href="#mat%C3%A9rn-parameterization"><i class="fas fa-link"></i></a>
+</h2>
+<p>The Matérn defines the covariance <span class="math inline">\(\Phi \left( s_j, s_k \right)\)</span> between spatial locations <span class="math inline">\(s_j\)</span> and <span class="math inline">\(s_k\)</span> as</p>
+<p><span class="math display">\[
+\Phi\left( s_j,s_k \right) = \tau^2/\Gamma(\nu)2^{\nu - 1} (\kappa d_{jk})^\nu K_\nu \left( \kappa d_{jk} \right),
+\]</span>
+<!-- TODO: paraphrase this to avoid self plagiarizing the synopsis report! --></p>
+<p>where <span class="math inline">\(\tau^2\)</span> controls the spatial variance,
+<span class="math inline">\(\nu\)</span> controls the smoothness,
+<span class="math inline">\(\Gamma\)</span> represents the Gamma function,
+<span class="math inline">\(d_{jk}\)</span> represents the distance between locations <span class="math inline">\(s_j\)</span> and <span class="math inline">\(s_k\)</span>,
+<span class="math inline">\(K_\nu\)</span> represents the modified Bessel function of the second kind,
+and <span class="math inline">\(\kappa\)</span> represents the decorrelation rate.
+The parameter <span class="math inline">\(\nu\)</span> is set to 1 to take advantage of the Stochastic Partial Differential Equation (SPDE) approximation to the GRF to greatly increase computational efficiency <span class="citation">(<a href="references.html#ref-lindgren2011" role="doc-biblioref">Lindgren, Rue, and Lindström 2011</a>)</span>.
+Internally, the parameters <span class="math inline">\(\kappa\)</span> and <span class="math inline">\(\tau\)</span> are converted to range and marginal standard deviation <span class="math inline">\(\sigma\)</span> as <span class="math inline">\(\textrm{range} = \sqrt{8} / \kappa\)</span> and <span class="math inline">\(\sigma = 1 / \sqrt{4 \pi \exp \left(2 \log(\tau) + 2 \log(\kappa) \right) }\)</span>.</p>
+<p>In the case of a spatiotemporal model with both spatial and spatiotemporal fields, if <code>share_range = TRUE</code> in <code>sdmTMB()</code> (the default), then a single <span class="math inline">\(\kappa\)</span> and range are estimated with separate <span class="math inline">\(\sigma_\omega\)</span> and <span class="math inline">\(\sigma_\epsilon\)</span>. This often makes sense since data are often only weakly informative about <span class="math inline">\(\kappa\)</span>.
+If <code>share_range = FALSE</code>, then separate <span class="math inline">\(\kappa_\omega\)</span> and <span class="math inline">\(\kappa_\epsilon\)</span> are estimated.
+The spatially varying coefficient field always shares <span class="math inline">\(\kappa\)</span> with the spatial random field.</p>
+</div>
+<div id="projection-boldsymbola-matrix" class="section level2" number="4.2">
+<h2>
+<span class="header-section-number">4.2</span> Projection <span class="math inline">\(\boldsymbol{A}\)</span> matrix<a class="anchor" aria-label="anchor" href="#projection-boldsymbola-matrix"><i class="fas fa-link"></i></a>
+</h2>
+<p>The values of the spatial variables at the knots are multiplied by a projection matrix <span class="math inline">\(\boldsymbol{A}\)</span> that bilinearly interpolates from the knot locations to the values at the locations of the observed or predicted data <span class="citation">(<a href="references.html#ref-lindgren2015" role="doc-biblioref">Lindgren and Rue 2015</a>)</span></p>
+<p><span class="math display">\[
+\boldsymbol{\omega}^* = \boldsymbol{A} \boldsymbol{\omega},
+\]</span>
+where <span class="math inline">\(\boldsymbol{\omega}^*\)</span> represents the values of the spatial random fields at the observed locations or predicted data locations.
+The matrix <span class="math inline">\(\boldsymbol{A}\)</span> has a row for each data point or prediction point and a column for each knot.
+Three non-zero elements on each row define the weight of the neighbouring 3 knot locations for location <span class="math inline">\(\boldsymbol{s}\)</span>.
+The same bilinear interpolation happens for any spatiotemporal random fields</p>
+<p><span class="math display">\[
+\boldsymbol{\epsilon}_t^* = \boldsymbol{A} \boldsymbol{\epsilon}_t.
+\]</span></p>
+</div>
+<div id="anisotropy" class="section level2" number="4.3">
+<h2>
+<span class="header-section-number">4.3</span> Anisotropy<a class="anchor" aria-label="anchor" href="#anisotropy"><i class="fas fa-link"></i></a>
+</h2>
+<p>TMB allows for anisotropy, where spatial covariance may be asymmetric with respect to latitude and longitude (<a href="https://kaskr.github.io/adcomp/namespaceR__inla.html">full details</a>). Anisotropy can be turned on or off with the logical <code>anisotropy</code> argument to <code>sdmTMB()</code>. There are a number of ways to implement anisotropic covariance <span class="citation">(<a href="references.html#ref-fuglstad2015a" role="doc-biblioref">Fuglstad et al. 2015</a>)</span>, and we adopt a 2-parameter rotation matrix <span class="math inline">\(\textbf{H}\)</span>. The elements of <span class="math inline">\(\textbf{H}\)</span> are defined by the parameter vector <span class="math inline">\(\boldsymbol{x}\)</span> so that <span class="math inline">\(H_{1,1} = x_{1}\)</span>, <span class="math inline">\(H_{1,2} = H_{2,1} = x_{2}\)</span> and <span class="math inline">\(H_{2,2} = (1 + x_{2}^2) / x_{1}\)</span>.</p>
+<p>Once a model is fitted with <code>sdmTMB()</code>, the anisotropy relationships may be plotted using the <code>plot_anisotropy()</code> function, which takes the fitted object as an argument. If a barrier mesh is used, anisotropy is disabled.</p>
+</div>
+<div id="incorporating-physical-barriers-into-the-spde" class="section level2" number="4.4">
+<h2>
+<span class="header-section-number">4.4</span> Incorporating physical barriers into the SPDE<a class="anchor" aria-label="anchor" href="#incorporating-physical-barriers-into-the-spde"><i class="fas fa-link"></i></a>
+</h2>
+<p>In some cases the spatial domain of interest may be complex and bounded by some barrier such as by land or water (e.g., coastlines, islands, lakes).
+SPDE models allow for physical barriers to be incorporated into the modelling <span class="citation">(<a href="references.html#ref-bakka2019" role="doc-biblioref">Bakka et al. 2019</a>)</span>.
+With <code>sdmTMB()</code> models, the mesh construction occurs in two steps: the user (1) constructs a mesh with a call to <code><a href="https://rdrr.io/pkg/sdmTMB/man/make_mesh.html">sdmTMB::make_mesh()</a></code>, and (2) passes the mesh to <code><a href="https://rdrr.io/pkg/sdmTMB/man/add_barrier_mesh.html">sdmTMB::add_barrier_mesh()</a></code>.
+The barriers must be constructed as <code>sf</code> objects <span class="citation">(<a href="references.html#ref-pebesma2018" role="doc-biblioref">Pebesma 2018</a>)</span> with polygons defining the barriers.
+See <code><a href="https://rdrr.io/pkg/sdmTMB/man/add_barrier_mesh.html">?sdmTMB::add_barrier_mesh</a></code> for an example.</p>
+<p>The barrier implementation requires the user to select a fraction value (<code>range_fraction</code> argument) that defines the fraction of the usual spatial range when crossing the barrier <span class="citation">(<a href="references.html#ref-bakka2019" role="doc-biblioref">Bakka et al. 2019</a>)</span>.
+For example, if the range was estimated at 10 km, <code>range_fraction = 0.2</code> would assume that the range was 2 km across the barrier.
+This would let the spatial correlation decay 5 times faster with distance.
+From experimentation, values around 0.1 or 0.2 seem to work well but values much lower than 0.1 can result in convergence issues.</p>
+<p><a href="https://haakonbakkagit.github.io/btopic128.html">This website</a> by Francesco Serafini and Haakon Bakka provides an illustration with INLA.
+The implementation within TMB was borrowed from code written by Olav Nikolai Breivik and Hans Skaug at the <a href="https://github.com/skaug/tmb-case-studies">TMB Case Studies</a> Github site.</p>
+
+</div>
+</div>
+  <div class="chapter-nav">
+<div class="prev"><a href="sdmtmb-model-structure.html"><span class="header-section-number">3</span> sdmTMB model structure</a></div>
+<div class="next"><a href="observation-model-families.html"><span class="header-section-number">5</span> Observation model families</a></div>
+</div></main><div class="col-md-3 col-lg-2 d-none d-md-block sidebar sidebar-chapter">
+    <nav id="toc" data-toggle="toc" aria-label="On this page"><h2>On this page</h2>
+      <ul class="nav navbar-nav">
+<li><a class="nav-link" href="#gaussian-random-fields"><span class="header-section-number">4</span> Gaussian random fields</a></li>
+<li><a class="nav-link" href="#mat%C3%A9rn-parameterization"><span class="header-section-number">4.1</span> Matérn parameterization</a></li>
+<li><a class="nav-link" href="#projection-boldsymbola-matrix"><span class="header-section-number">4.2</span> Projection \(\boldsymbol{A}\) matrix</a></li>
+<li><a class="nav-link" href="#anisotropy"><span class="header-section-number">4.3</span> Anisotropy</a></li>
+<li><a class="nav-link" href="#incorporating-physical-barriers-into-the-spde"><span class="header-section-number">4.4</span> Incorporating physical barriers into the SPDE</a></li>
+</ul>
+
+      <div class="book-extra">
+        <ul class="list-unstyled">
+          
+        </ul>
+</div>
+    </nav>
+</div>
+
+</div>
+</div> <!-- .container -->
+
+<footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
+
+  <div class="col-12 col-md-6 mt-3">
+    <p>"<strong>sdmTMB Manual</strong>" was written by Sean C. Anderson, …. It was last built on 2022-11-01.</p>
+  </div>
+
+  <div class="col-12 col-md-6 mt-3">
+    <p>This book was built by the <a class="text-light" href="https://bookdown.org">bookdown</a> R package.</p>
+  </div>
+
+</div></div>
+</footer><!-- dynamically load mathjax for compatibility with self-contained --><script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script><script type="text/x-mathjax-config">const popovers = document.querySelectorAll('a.footnote-ref[data-toggle="popover"]');
+for (let popover of popovers) {
+  const div = document.createElement('div');
+  div.setAttribute('style', 'position: absolute; top: 0, left:0; width:0, height:0, overflow: hidden; visibility: hidden;');
+  div.innerHTML = popover.getAttribute('data-content');
+
+  var has_math = div.querySelector("span.math");
+  if (has_math) {
+    document.body.appendChild(div);
+    MathJax.Hub.Queue(["Typeset", MathJax.Hub, div]);
+    MathJax.Hub.Queue(function() {
+      popover.setAttribute('data-content', div.innerHTML);
+      document.body.removeChild(div);
+    })
+  }
+}
+</script>
+</body>
+</html>

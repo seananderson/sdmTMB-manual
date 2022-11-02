@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>Chapter 3 sdmTMB model structure | sdmTMB Manual</title>
+<meta name="author" content="Sean C. Anderson, …">
+<meta name="description" content="The complete sdmTMB model can be written as \[ \begin{aligned} \mathbb{E}[y_{\boldsymbol{s},t}] &amp;= \mu_{\boldsymbol{s},t},\\ \mu_{\boldsymbol{s},t} &amp;= f^{-1} \left(...">
+<meta name="generator" content="bookdown 0.29 with bs4_book()">
+<meta property="og:title" content="Chapter 3 sdmTMB model structure | sdmTMB Manual">
+<meta property="og:type" content="book">
+<meta property="og:description" content="The complete sdmTMB model can be written as \[ \begin{aligned} \mathbb{E}[y_{\boldsymbol{s},t}] &amp;= \mu_{\boldsymbol{s},t},\\ \mu_{\boldsymbol{s},t} &amp;= f^{-1} \left(...">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Chapter 3 sdmTMB model structure | sdmTMB Manual">
+<meta name="twitter:description" content="The complete sdmTMB model can be written as \[ \begin{aligned} \mathbb{E}[y_{\boldsymbol{s},t}] &amp;= \mu_{\boldsymbol{s},t},\\ \mu_{\boldsymbol{s},t} &amp;= f^{-1} \left(...">
+<!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link href="libs/bootstrap-4.6.0/bootstrap.min.css" rel="stylesheet">
+<script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><script src="libs/bs3compat-0.4.0/transition.js"></script><script src="libs/bs3compat-0.4.0/tabs.js"></script><script src="libs/bs3compat-0.4.0/bs3compat.js"></script><link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet">
+<script src="libs/bs4_book-1.0.0/bs4_book.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- CSS --><style type="text/css">
+    
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  </style>
+<style type="text/css">
+    /* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+    div.csl-bib-body { }
+    div.csl-entry {
+      clear: both;
+        }
+    .hanging div.csl-entry {
+      margin-left:2em;
+      text-indent:-2em;
+    }
+    div.csl-left-margin {
+      min-width:2em;
+      float:left;
+    }
+    div.csl-right-inline {
+      margin-left:2em;
+      padding-left:1em;
+    }
+    div.csl-indent {
+      margin-left: 2em;
+    }
+  </style>
+</head>
+<body data-spy="scroll" data-target="#toc">
+
+<div class="container-fluid">
+<div class="row">
+  <header class="col-sm-12 col-lg-3 sidebar sidebar-book"><a class="sr-only sr-only-focusable" href="#content">Skip to main content</a>
+
+    <div class="d-flex align-items-start justify-content-between">
+      <h1>
+        <a href="index.html" title="">sdmTMB Manual</a>
+      </h1>
+      <button class="btn btn-outline-primary d-lg-none ml-2 mt-1" type="button" data-toggle="collapse" data-target="#main-nav" aria-expanded="true" aria-controls="main-nav"><i class="fas fa-bars"></i><span class="sr-only">Show table of contents</span></button>
+    </div>
+
+    <div id="main-nav" class="collapse-lg">
+      <form role="search">
+        <input id="search" class="form-control" type="search" placeholder="Search" aria-label="Search">
+</form>
+
+      <nav aria-label="Table of contents"><h2>Table of contents</h2>
+        <ul class="book-toc list-unstyled">
+<li><a class="" href="index.html"><span class="header-section-number">1</span> Introduction</a></li>
+<li><a class="" href="notation.html"><span class="header-section-number">2</span> Notation conventions</a></li>
+<li><a class="active" href="sdmtmb-model-structure.html"><span class="header-section-number">3</span> sdmTMB model structure</a></li>
+<li><a class="" href="gaussian-random-fields.html"><span class="header-section-number">4</span> Gaussian random fields</a></li>
+<li><a class="" href="observation-model-families.html"><span class="header-section-number">5</span> Observation model families</a></li>
+<li><a class="" href="optimization.html"><span class="header-section-number">6</span> Optimization</a></li>
+<li><a class="" href="references.html">References</a></li>
+</ul>
+
+        <div class="book-extra">
+          
+        </div>
+      </nav>
+</div>
+  </header><main class="col-sm-12 col-md-9 col-lg-7" id="content"><div id="sdmtmb-model-structure" class="section level1" number="3">
+<h1>
+<span class="header-section-number">3</span> sdmTMB model structure<a class="anchor" aria-label="anchor" href="#sdmtmb-model-structure"><i class="fas fa-link"></i></a>
+</h1>
+<p>The complete sdmTMB model can be written as</p>
+<p><span class="math display">\[
+\begin{aligned}
+\mathbb{E}[y_{\boldsymbol{s},t}] &amp;= \mu_{\boldsymbol{s},t},\\
+\mu_{\boldsymbol{s},t} &amp;=
+f^{-1} \left( \boldsymbol{X}^{\mathrm{main}}_{\boldsymbol{s},t} \boldsymbol{\beta} +
+O_{\boldsymbol{s},t} +
+\alpha_g +
+\boldsymbol{X}^{\mathrm{tvc}}_{\boldsymbol{s},t} \boldsymbol{\gamma_t} +
+\boldsymbol{X}^{\mathrm{svc}}_{\boldsymbol{s},t} \zeta_{\boldsymbol{s}} +
+\omega_{\boldsymbol{s}} +
+\epsilon_{\boldsymbol{s},t} \right),
+\end{aligned}
+\]</span></p>
+<p>where</p>
+<ul>
+<li>
+<span class="math inline">\(y_{\boldsymbol{s},t}\)</span> represents the response data at point <span class="math inline">\(\boldsymbol{\boldsymbol{s}}\)</span> and time <span class="math inline">\(t\)</span>;</li>
+<li>
+<span class="math inline">\(\mu\)</span> represents the mean;</li>
+<li>
+<span class="math inline">\(f\)</span> represents a link function (e.g., log or logit) and <span class="math inline">\(f^{-1}\)</span> represents its inverse;</li>
+<li>
+<span class="math inline">\(\boldsymbol{X}^{\mathrm{main}}\)</span>, <span class="math inline">\(\boldsymbol{X}^{\mathrm{tvc}}\)</span>, and <span class="math inline">\(\boldsymbol{X}^{\mathrm{svc}}\)</span> represent design matrices (the superscript identifiers ‘main’ = main effects, ‘tvc’ = time varying coefficients, and ‘svc’ = spatially varying coefficients);</li>
+<li>
+<span class="math inline">\(\boldsymbol{\beta}\)</span> represents a vector of fixed-effect coefficients;</li>
+<li>
+<span class="math inline">\(O_{\boldsymbol{s},t}\)</span> represents an offset: a covariate (usually log transformed) with a coefficient fixed at one;</li>
+<li>
+<span class="math inline">\(\alpha_{g}\)</span> represents random intercepts by group <span class="math inline">\(g\)</span>, <span class="math inline">\(\alpha_{g}\sim \mathrm{N}(0,\sigma^2_\alpha)\)</span>;</li>
+<li>
+<span class="math inline">\(\gamma_{t}\)</span> represents time-varying coefficients (a random walk), <span class="math inline">\(\gamma_{t} \sim \mathrm{N}(\gamma_{t-1},\sigma^2_\gamma)\)</span>;</li>
+<li>
+<span class="math inline">\(\zeta_{\boldsymbol{s}}\)</span> represents spatially varying coefficients (a random field), <span class="math inline">\(\zeta_{\boldsymbol{s}} \sim \mathrm{MVN}(\boldsymbol{0},\boldsymbol{\Sigma}_\zeta)\)</span>;</li>
+<li>
+<span class="math inline">\(\omega_{\boldsymbol{s}}\)</span> represents a spatial component (a random field), <span class="math inline">\(\omega_{\boldsymbol{s}} \sim \mathrm{MVN}(\boldsymbol{0},\boldsymbol{\Sigma}_\omega)\)</span>; and</li>
+<li>
+<span class="math inline">\(\epsilon_{\boldsymbol{s},t}\)</span> represents a spatiotemporal component (a random field), <span class="math inline">\(\epsilon_{\boldsymbol{s},t} \sim \mathrm{MVN}(\boldsymbol{0},\boldsymbol{\Sigma}_{\epsilon})\)</span>.</li>
+</ul>
+<p>A single sdmTMB model will rarely, if ever, contain all of the above components. Next, we will split the model to describe the various parts in more detail using ‘<span class="math inline">\(\ldots\)</span>’ to represent the other optional components.</p>
+<div id="main-effects" class="section level2" number="3.1">
+<h2>
+<span class="header-section-number">3.1</span> Main effects<a class="anchor" aria-label="anchor" href="#main-effects"><i class="fas fa-link"></i></a>
+</h2>
+<p><span class="math display">\[
+\begin{aligned}
+\mu_{\boldsymbol{s},t} &amp;= f^{-1} \left( \boldsymbol{X}^{\mathrm{main}}_{\boldsymbol{s},t} \boldsymbol{\beta} \ldots \right)
+\end{aligned}
+\]</span></p>
+<p>Within <code>sdmTMB()</code>, <span class="math inline">\(\boldsymbol{X}^{\mathrm{main}}_{\boldsymbol{s},t} \boldsymbol{\beta}\)</span> is defined by the <code>formula</code> argument and represents the main-effect model matrix and a corresponding vector of coefficients. This main effect formula can contain optional penalized smoothers or non-linear functions as defined below.</p>
+<div id="smoothers" class="section level3" number="3.1.1">
+<h3>
+<span class="header-section-number">3.1.1</span> Smoothers<a class="anchor" aria-label="anchor" href="#smoothers"><i class="fas fa-link"></i></a>
+</h3>
+<p>Smoothers in sdmTMB are implemented with the same formula syntax familiar to mgcv <span class="citation">(<a href="references.html#ref-wood2017a" role="doc-biblioref">S. N. Wood 2017</a>)</span> users fitting GAMs (generalized additive models).
+Smooths are implemented in the formula using <code>+ s(x)</code>, which implements a smooth from <code><a href="https://rdrr.io/pkg/mgcv/man/s.html">mgcv::s()</a></code>.
+Within these smooths, the same syntax commonly used in <code><a href="https://rdrr.io/pkg/mgcv/man/s.html">mgcv::s()</a></code> can be applied, e.g. 2-dimensional smooths may be constructed with <code>+ s(x, y)</code>; smooths can be specific to various factor levels, <code>+ s(x, by = group)</code>; smooths can vary according to a continuous variable, <code>+ s(x, by = x2)</code>; the basis function dimensions may be specified, e.g. <code>+ s(x, k = 4)</code> (see <code><a href="https://rdrr.io/pkg/mgcv/man/choose.k.html">?mgcv::choose.k</a></code>); and various types of splines may be constructed such as cyclic splines to model seasonality, e.g. <code>+ s(month, bs = "cc", k = 12)</code>.</p>
+<p>While mgcv can fit unpenalized (e.g., B-splines) or penalized splines (P-splines), sdmTMB only implements penalized splines.
+The penalized splines are constructed in sdmTMB using the function <code><a href="https://rdrr.io/pkg/mgcv/man/smooth2random.html">mgcv::smooth2random()</a></code>, which transforms splines into random effects (and associated design matrices) that are estimable in a mixed-effects modelling framework.
+This is the same approach as is implemented in the R packages gamm4 <span class="citation">(<a href="references.html#ref-wood2020" role="doc-biblioref">S. Wood and Scheipl 2020</a>)</span> and brms <span class="citation">(<a href="references.html#ref-burkner2017" role="doc-biblioref">Bürkner 2017</a>)</span>.
+<!-- There are too other options for the brms ref, burkner2018 and burkner2021 --></p>
+</div>
+<div id="linear-break-point-threshold-models" class="section level3" number="3.1.2">
+<h3>
+<span class="header-section-number">3.1.2</span> Linear break-point threshold models<a class="anchor" aria-label="anchor" href="#linear-break-point-threshold-models"><i class="fas fa-link"></i></a>
+</h3>
+<p>The linear break-point or “hockey stick” model can be used to describe threshold or asymptotic responses.
+This function consists of two pieces, so that for <span class="math inline">\(x &lt; b_{1}\)</span>, <span class="math inline">\(s(x) = x \cdot b_{0}\)</span>, and for <span class="math inline">\(x &gt; b_{1}\)</span>, <span class="math inline">\(s(x) = b_{1} \cdot b_{0}\)</span>.
+In both cases, <span class="math inline">\(b_{0}\)</span> represents the slope of the function up to a threshold, and the product <span class="math inline">\(b_{1} \cdot b_{0}\)</span> represents the value at the asymptote. No constraints are placed on parameters <span class="math inline">\(b_{0}\)</span> or <span class="math inline">\(b_{1}\)</span>.</p>
+<p>These models can be fit by including <code>+ breakpt(x)</code> in the model formula, where
+<code>x</code> is a covariate.
+The formula can contain a single break-point covariate.</p>
+</div>
+<div id="logistic-threshold-models" class="section level3" number="3.1.3">
+<h3>
+<span class="header-section-number">3.1.3</span> Logistic threshold models<a class="anchor" aria-label="anchor" href="#logistic-threshold-models"><i class="fas fa-link"></i></a>
+</h3>
+<p>Models with logistic threshold relationships between a predictor and the response can be fit with the form</p>
+<p><span class="math display">\[
+s(x)=\tau + \psi\ { \left[ 1+{ e }^{ -\ln \left(19\right) \cdot \left( x-s50 \right)
+     / \left(s95 - s50 \right) } \right] }^{-1},
+\]</span></p>
+<p>where <span class="math inline">\(s\)</span> represents the logistic function,
+<span class="math inline">\(\psi\)</span> is a scaling parameter (controlling the height of the y-axis for the response; unconstrained),
+<span class="math inline">\(\tau\)</span> is an intercept,
+<span class="math inline">\(s50\)</span> is a parameter controlling the point at which the function reaches 50% of the maximum (<span class="math inline">\(\psi\)</span>),
+and <span class="math inline">\(s95\)</span> is a parameter controlling the point at which the function reaches 95% of the maximum.
+The parameter <span class="math inline">\(s50\)</span> is unconstrained but <span class="math inline">\(s95\)</span> is constrained to be larger than <span class="math inline">\(s50\)</span>.</p>
+<p>These models can be fit by including <code>+ logistic(x)</code> in the model formula, where <code>x</code> is a covariate.
+The formula can contain a single logistic covariate.</p>
+</div>
+</div>
+<div id="spatial-random-fields" class="section level2" number="3.2">
+<h2>
+<span class="header-section-number">3.2</span> Spatial random fields<a class="anchor" aria-label="anchor" href="#spatial-random-fields"><i class="fas fa-link"></i></a>
+</h2>
+<p>Spatial random fields, <span class="math inline">\(\omega_{\boldsymbol{s}}\)</span>, are included if <code>spatial = 'on'</code> (or <code>TRUE</code>) and omitted if <code>spatial = 'off'</code> (or <code>FALSE</code>).</p>
+<p><span class="math display">\[
+\begin{aligned}
+\mu_{\boldsymbol{s},t} &amp;= f^{-1} \left( \ldots + \omega_{\boldsymbol{s}} + \ldots \right),\\
+\boldsymbol{\omega} &amp;\sim \operatorname{MVNormal} \left( \boldsymbol{0}, \boldsymbol{\Sigma}_\omega \right),\\
+\end{aligned}
+\]</span>
+The marginal standard deviation of <span class="math inline">\(\boldsymbol{\omega}\)</span> is indicated by <code>Spatial SD</code> in the printed model output or as <code>sigma_O</code> in the output of <code>sdmTMB::tidy(fit, "ran_pars")</code>. The ‘O’ is for ‘omega’ (<span class="math inline">\(\omega\)</span>).</p>
+<p>Internally, the random fields follow a Gaussian Markov random field (GMRF)</p>
+<p><span class="math display">\[
+\boldsymbol{\omega} \sim \mathrm{MVNormal}\left(\boldsymbol{0}, \sigma_\omega^2 \boldsymbol{Q}^{-1}_\omega\right),
+\]</span>
+where <span class="math inline">\(\boldsymbol{Q}_\omega\)</span> is a sparse precision matrix and <span class="math inline">\(\sigma_\omega^2\)</span> is the marginal variance.</p>
+</div>
+<div id="spatiotemporal-random-fields" class="section level2" number="3.3">
+<h2>
+<span class="header-section-number">3.3</span> Spatiotemporal random fields<a class="anchor" aria-label="anchor" href="#spatiotemporal-random-fields"><i class="fas fa-link"></i></a>
+</h2>
+<p>Spatiotemporal random fields are included by default if there are multiple time elements (<code>time</code> argument is not <code>NULL</code>) and can be set to IID (independent and identically distributed, <code>'iid'</code>; default), AR(1) (<code>'ar1'</code>), random walk (<code>'rw'</code>), or off (<code>'off'</code>) via the <code>spatiotemporal</code> argument.
+These text values are case insensitive.</p>
+<p>Spatiotemporal random fields are represented by <span class="math inline">\(\boldsymbol{\epsilon}_t\)</span> within sdmTMB.
+This has been chosen to match the representation in VAST <span class="citation">(<a href="references.html#ref-thorson2019" role="doc-biblioref">Thorson 2019</a>)</span>.
+The marginal standard deviation of <span class="math inline">\(\boldsymbol{\epsilon}_t\)</span> is indicated by <code>Spatiotemporal SD</code> in the printed model output or as <code>sigma_E</code> in the output of <code>sdmTMB::tidy(fit, "ran_pars")</code>.
+The ‘E’ is for ‘epsilon’ (<span class="math inline">\(\epsilon\)</span>).</p>
+<div id="iid-spatiotemporal-random-fields" class="section level3" number="3.3.1">
+<h3>
+<span class="header-section-number">3.3.1</span> IID spatiotemporal random fields<a class="anchor" aria-label="anchor" href="#iid-spatiotemporal-random-fields"><i class="fas fa-link"></i></a>
+</h3>
+<p>IID spatiotemporal random fields (<code>spatiotemporal = 'iid'</code>) can be represented as</p>
+<p><span class="math display">\[
+\begin{aligned}
+\mu_{\boldsymbol{s},t} &amp;= f^{-1} \left( \ldots + \epsilon_{\boldsymbol{s},t} + \ldots \right),\\
+\boldsymbol{\epsilon_{t}} &amp;\sim \operatorname{MVNormal} \left( \boldsymbol{0}, \boldsymbol{\Sigma}_{\epsilon} \right).
+\end{aligned}
+\]</span></p>
+<p>where <span class="math inline">\(\epsilon_{\boldsymbol{s},t}\)</span> represent random field deviations at point <span class="math inline">\(\boldsymbol{s}\)</span> and time <span class="math inline">\(t\)</span>.
+The random fields are assumed independent across time steps.</p>
+<p>Similarly to the spatial random fields, these spatiotemporal random fields (including all versions described below) are parameterized internally with a sparse precision matrix (<span class="math inline">\(\boldsymbol{Q}_\epsilon\)</span>)</p>
+<p><span class="math display">\[
+\boldsymbol{\epsilon_{t}} \sim \mathrm{MVNormal}\left(\boldsymbol{0}, \sigma_\epsilon^2 \boldsymbol{Q}^{-1}_\epsilon\right).
+\]</span></p>
+</div>
+<div id="ar1-spatiotemporal-random-fields" class="section level3" number="3.3.2">
+<h3>
+<span class="header-section-number">3.3.2</span> AR(1) spatiotemporal random fields<a class="anchor" aria-label="anchor" href="#ar1-spatiotemporal-random-fields"><i class="fas fa-link"></i></a>
+</h3>
+<p>First-order auto regressive, AR(1), spatiotemporal random fields (<code>spatiotemporal = 'ar1'</code>) add a parameter defining the correlation between random field deviations from one time step to the next.
+They are defined as</p>
+<p><span class="math display">\[
+\begin{aligned}
+\mu_{\boldsymbol{s},t} &amp;= f^{-1} \left( \ldots + \delta_{\boldsymbol{s},t} \ldots \right),\\
+\boldsymbol{\delta}_{t=1} &amp;\sim \operatorname{MVNormal} (\boldsymbol{0}, \boldsymbol{\Sigma}_{\epsilon}),\\
+\boldsymbol{\delta}_{t&gt;1} &amp;= \rho \boldsymbol{\delta}_{t-1} + \sqrt{1 - \rho^2} \boldsymbol{\epsilon_{t}},  \:
+\boldsymbol{\epsilon_{t}} \sim \operatorname{MVNormal} \left(\boldsymbol{0}, \boldsymbol{\Sigma}_{\epsilon} \right),
+\end{aligned}
+\]</span>
+where <span class="math inline">\(\rho\)</span> is the correlation between subsequent spatiotemporal random fields.
+The <span class="math inline">\(\rho \boldsymbol{\delta}_{t-1} + \sqrt{1 - \rho^2}\)</span> term scales the spatiotemporal variance by the correlation such that it represents the steady-state marginal variance.
+The correlation <span class="math inline">\(\rho\)</span> allows for mean-reverting spatiotemporal fields, and is constrained to be <span class="math inline">\(-1 &lt; \rho &lt; 1\)</span>.
+Internally, the parameter is estimated as <code>ar1_phi</code>, which is unconstrained.
+The parameter <code>ar1_phi</code> is transformed to <span class="math inline">\(\rho\)</span> with <span class="math inline">\(\rho = 2 \left( \mathrm{logit}^{-1}(\texttt{ar1\_phi}) - 1 \right)\)</span>.</p>
+</div>
+<div id="random-walk-spatiotemporal-random-fields-rw" class="section level3" number="3.3.3">
+<h3>
+<span class="header-section-number">3.3.3</span> Random walk spatiotemporal random fields (RW)<a class="anchor" aria-label="anchor" href="#random-walk-spatiotemporal-random-fields-rw"><i class="fas fa-link"></i></a>
+</h3>
+<p>Random walk spatiotemporal random fields (<code>spatiotemporal = 'rw'</code>) represent a model where the difference in spatiotemporal deviations from one time step to the next are IID. They are defined as</p>
+<p><span class="math display">\[
+\begin{aligned}
+\mu_{\boldsymbol{s},t} &amp;= f^{-1} \left( \ldots + \delta_{\boldsymbol{s},t} + \ldots \right),\\
+\boldsymbol{\delta}_{t=1} &amp;\sim \operatorname{MVNormal} (\boldsymbol{0}, \boldsymbol{\Sigma}_{\epsilon}),\\
+\boldsymbol{\delta}_{t&gt;1} &amp;= \boldsymbol{\delta}_{t-1} +  \boldsymbol{\epsilon_{t-1}},  \:
+\boldsymbol{\epsilon_{t-1}} \sim \operatorname{MVNormal} \left(\boldsymbol{0}, \boldsymbol{\Sigma}_{\epsilon} \right),
+\end{aligned}
+\]</span></p>
+<p>where the distribution of the spatiotemporal field in the initial time step is the same as for the AR(1) model, but the absence of the <span class="math inline">\(\rho\)</span> parameter allows the spatiotemporal field to be non-stationary in time.
+Note that, in contrast to the AR(1) parametrization, the variance is no longer the steady-state marginal variance.</p>
+</div>
+</div>
+<div id="time-varying-regression-parameters" class="section level2" number="3.4">
+<h2>
+<span class="header-section-number">3.4</span> Time-varying regression parameters<a class="anchor" aria-label="anchor" href="#time-varying-regression-parameters"><i class="fas fa-link"></i></a>
+</h2>
+<p>Parameters can be modelled as time varying (a random walk) according to the form</p>
+<p><span class="math display">\[
+\begin{aligned}
+  \mu_{\boldsymbol{s},t} &amp;= f^{-1} \left( \ldots +  \boldsymbol{X}^{\mathrm{tvc}}_{\boldsymbol{s},t} \boldsymbol{\gamma_{t}} + \ldots \right),\\
+  \gamma_{t=1} &amp;\sim \operatorname{Uniform} \left(-\infty, \infty \right),\\
+  \gamma_{t&gt;1} &amp;\sim \operatorname{Normal} \left(\gamma_{t-1}, \sigma^2_{\gamma} \right),
+\end{aligned}
+\]</span></p>
+<p>where <span class="math inline">\(\boldsymbol{\gamma_t}\)</span> is an optional vector of time-varying regression parameters and <span class="math inline">\(\boldsymbol{X}^{\mathrm{tvc}}_{\boldsymbol{s},t}\)</span> is the corresponding model matrix with covariate values.
+This is defined via the <code>time_varying</code> argument, assuming that the <code>time</code> argument is also supplied a column name.
+For example, <code>time_varying ~ 0 + x</code>.
+The first value is given an implicit uniform prior.
+I.e., the same variable should not appear in the fixed effect formula since the initial value is estimated as part of the time-varying formula.
+The formula <code>time_varying = ~ 1</code> implicitly represents a time-varying intercept and, this case, the intercept should be omitted from the main effects (<code>formula ~ + 0 + ...</code> or <code>formula ~ -1 + ...</code>).</p>
+</div>
+<div id="spatially-varying-coefficients-svc" class="section level2" number="3.5">
+<h2>
+<span class="header-section-number">3.5</span> Spatially varying coefficients (SVC)<a class="anchor" aria-label="anchor" href="#spatially-varying-coefficients-svc"><i class="fas fa-link"></i></a>
+</h2>
+<p>Spatially varying coefficient models are defined as</p>
+<p><span class="math display">\[
+\begin{aligned}
+  \mu_{\boldsymbol{s},t} &amp;= f^{-1} \left( \ldots + \boldsymbol{X}^{\mathrm{svc}}_{\boldsymbol{s}, t} \zeta_{\boldsymbol{s}} + \ldots \right),\\
+  \boldsymbol{\zeta} &amp;\sim \operatorname{MVNormal} \left( \boldsymbol{0}, \boldsymbol{\Sigma}_\zeta \right),
+\end{aligned}
+\]</span></p>
+<p>where <span class="math inline">\(\boldsymbol{\zeta}\)</span> is a random field representing a spatially varying coefficient.
+Usually, <span class="math inline">\(\boldsymbol{X}^{\mathrm{svc}}_{\boldsymbol{s}, t}\)</span> would represent a prediction matrix that is constant spatially for a given time <span class="math inline">\(t\)</span> as defined by a one-sided formula supplied to <code>spatial_varying</code>.
+For example <code>spatial_varying = ~ 0 + x</code>, where <code>0</code> omits the intercept.</p>
+<p>The random fields are parameterized internally with a sparse precision matrix (<span class="math inline">\(\boldsymbol{Q}_\zeta\)</span>)</p>
+<p><span class="math display">\[
+\boldsymbol{\zeta} \sim \mathrm{MVNormal}\left(\boldsymbol{0}, \sigma_\zeta^2 \boldsymbol{Q}^{-1}_\zeta\right).
+\]</span></p>
+</div>
+<div id="iid-random-or-multi-level-intercepts" class="section level2" number="3.6">
+<h2>
+<span class="header-section-number">3.6</span> IID random or multi-level intercepts<a class="anchor" aria-label="anchor" href="#iid-random-or-multi-level-intercepts"><i class="fas fa-link"></i></a>
+</h2>
+<p>Multilevel/hierchical intercepts are defined as</p>
+<p><span class="math display">\[
+\begin{aligned}
+  \mu_{\boldsymbol{s},t} &amp;= f^{-1} \left( \ldots + \alpha_{g} + \ldots \right),\\
+  \alpha_g &amp;\sim \operatorname{Normal} \left(0, \sigma_\alpha^2 \right),\\
+\end{aligned}
+\]</span></p>
+<p>where <span class="math inline">\(\alpha_g\)</span> is an example optional “random” intercept—an intercept
+with mean zero that varies by level <span class="math inline">\(g\)</span> and is constrained by <span class="math inline">\(\sigma_\alpha\)</span>.
+This is defined by the <code>formula</code> argument via the <code>(1 | g)</code> syntax as in lme4 or glmmTMB.
+There can be multiple random intercepts, despite only showing one above.
+E.g., <code>(1 | g1) + (1 | g2)</code>, in which case they are assumed independent and uncorrelated from each other.</p>
+</div>
+<div id="offset-terms" class="section level2" number="3.7">
+<h2>
+<span class="header-section-number">3.7</span> Offset terms<a class="anchor" aria-label="anchor" href="#offset-terms"><i class="fas fa-link"></i></a>
+</h2>
+<p>Offset terms can be included through the <code>offset</code> argument in <code>sdmTMB()</code>.
+These are included in the linear predictor as</p>
+<p><span class="math display">\[
+\begin{aligned}
+  \mu_{\boldsymbol{s},t} &amp;= f^{-1} \left( \ldots + O_{\boldsymbol{s},t} + \ldots \right),
+\end{aligned}
+\]</span></p>
+<p>where <span class="math inline">\(O_{\boldsymbol{s},t}\)</span> is an offset term—a <strong>log transformed</strong> variable without a coefficient (assuming a log link).
+The offset is <em>not</em> included in the prediction.
+Therefore, if <code>offset</code> represents a measure of effort, for example, the prediction is for one unit of effort (<code>log(1) = 0</code>).</p>
+
+</div>
+</div>
+  <div class="chapter-nav">
+<div class="prev"><a href="notation.html"><span class="header-section-number">2</span> Notation conventions</a></div>
+<div class="next"><a href="gaussian-random-fields.html"><span class="header-section-number">4</span> Gaussian random fields</a></div>
+</div></main><div class="col-md-3 col-lg-2 d-none d-md-block sidebar sidebar-chapter">
+    <nav id="toc" data-toggle="toc" aria-label="On this page"><h2>On this page</h2>
+      <ul class="nav navbar-nav">
+<li><a class="nav-link" href="#sdmtmb-model-structure"><span class="header-section-number">3</span> sdmTMB model structure</a></li>
+<li>
+<a class="nav-link" href="#main-effects"><span class="header-section-number">3.1</span> Main effects</a><ul class="nav navbar-nav">
+<li><a class="nav-link" href="#smoothers"><span class="header-section-number">3.1.1</span> Smoothers</a></li>
+<li><a class="nav-link" href="#linear-break-point-threshold-models"><span class="header-section-number">3.1.2</span> Linear break-point threshold models</a></li>
+<li><a class="nav-link" href="#logistic-threshold-models"><span class="header-section-number">3.1.3</span> Logistic threshold models</a></li>
+</ul>
+</li>
+<li><a class="nav-link" href="#spatial-random-fields"><span class="header-section-number">3.2</span> Spatial random fields</a></li>
+<li>
+<a class="nav-link" href="#spatiotemporal-random-fields"><span class="header-section-number">3.3</span> Spatiotemporal random fields</a><ul class="nav navbar-nav">
+<li><a class="nav-link" href="#iid-spatiotemporal-random-fields"><span class="header-section-number">3.3.1</span> IID spatiotemporal random fields</a></li>
+<li><a class="nav-link" href="#ar1-spatiotemporal-random-fields"><span class="header-section-number">3.3.2</span> AR(1) spatiotemporal random fields</a></li>
+<li><a class="nav-link" href="#random-walk-spatiotemporal-random-fields-rw"><span class="header-section-number">3.3.3</span> Random walk spatiotemporal random fields (RW)</a></li>
+</ul>
+</li>
+<li><a class="nav-link" href="#time-varying-regression-parameters"><span class="header-section-number">3.4</span> Time-varying regression parameters</a></li>
+<li><a class="nav-link" href="#spatially-varying-coefficients-svc"><span class="header-section-number">3.5</span> Spatially varying coefficients (SVC)</a></li>
+<li><a class="nav-link" href="#iid-random-or-multi-level-intercepts"><span class="header-section-number">3.6</span> IID random or multi-level intercepts</a></li>
+<li><a class="nav-link" href="#offset-terms"><span class="header-section-number">3.7</span> Offset terms</a></li>
+</ul>
+
+      <div class="book-extra">
+        <ul class="list-unstyled">
+          
+        </ul>
+</div>
+    </nav>
+</div>
+
+</div>
+</div> <!-- .container -->
+
+<footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
+
+  <div class="col-12 col-md-6 mt-3">
+    <p>"<strong>sdmTMB Manual</strong>" was written by Sean C. Anderson, …. It was last built on 2022-11-01.</p>
+  </div>
+
+  <div class="col-12 col-md-6 mt-3">
+    <p>This book was built by the <a class="text-light" href="https://bookdown.org">bookdown</a> R package.</p>
+  </div>
+
+</div></div>
+</footer><!-- dynamically load mathjax for compatibility with self-contained --><script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script><script type="text/x-mathjax-config">const popovers = document.querySelectorAll('a.footnote-ref[data-toggle="popover"]');
+for (let popover of popovers) {
+  const div = document.createElement('div');
+  div.setAttribute('style', 'position: absolute; top: 0, left:0; width:0, height:0, overflow: hidden; visibility: hidden;');
+  div.innerHTML = popover.getAttribute('data-content');
+
+  var has_math = div.querySelector("span.math");
+  if (has_math) {
+    document.body.appendChild(div);
+    MathJax.Hub.Queue(["Typeset", MathJax.Hub, div]);
+    MathJax.Hub.Queue(function() {
+      popover.setAttribute('data-content', div.innerHTML);
+      document.body.removeChild(div);
+    })
+  }
+}
+</script>
+</body>
+</html>

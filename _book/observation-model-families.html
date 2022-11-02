@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>Chapter 5 Observation model families | sdmTMB Manual</title>
+<meta name="author" content="Sean C. Anderson, …">
+<meta name="description" content="Here we describe the main observation families that are available in sdmTMB and comment on their parametrization, statistical properties, utility, and code representation in sdmTMB.  5.1 Binomial...">
+<meta name="generator" content="bookdown 0.29 with bs4_book()">
+<meta property="og:title" content="Chapter 5 Observation model families | sdmTMB Manual">
+<meta property="og:type" content="book">
+<meta property="og:description" content="Here we describe the main observation families that are available in sdmTMB and comment on their parametrization, statistical properties, utility, and code representation in sdmTMB.  5.1 Binomial...">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Chapter 5 Observation model families | sdmTMB Manual">
+<meta name="twitter:description" content="Here we describe the main observation families that are available in sdmTMB and comment on their parametrization, statistical properties, utility, and code representation in sdmTMB.  5.1 Binomial...">
+<!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link href="libs/bootstrap-4.6.0/bootstrap.min.css" rel="stylesheet">
+<script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><script src="libs/bs3compat-0.4.0/transition.js"></script><script src="libs/bs3compat-0.4.0/tabs.js"></script><script src="libs/bs3compat-0.4.0/bs3compat.js"></script><link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet">
+<script src="libs/bs4_book-1.0.0/bs4_book.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- CSS --><style type="text/css">
+    
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  </style>
+<style type="text/css">
+    /* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+    div.csl-bib-body { }
+    div.csl-entry {
+      clear: both;
+        }
+    .hanging div.csl-entry {
+      margin-left:2em;
+      text-indent:-2em;
+    }
+    div.csl-left-margin {
+      min-width:2em;
+      float:left;
+    }
+    div.csl-right-inline {
+      margin-left:2em;
+      padding-left:1em;
+    }
+    div.csl-indent {
+      margin-left: 2em;
+    }
+  </style>
+</head>
+<body data-spy="scroll" data-target="#toc">
+
+<div class="container-fluid">
+<div class="row">
+  <header class="col-sm-12 col-lg-3 sidebar sidebar-book"><a class="sr-only sr-only-focusable" href="#content">Skip to main content</a>
+
+    <div class="d-flex align-items-start justify-content-between">
+      <h1>
+        <a href="index.html" title="">sdmTMB Manual</a>
+      </h1>
+      <button class="btn btn-outline-primary d-lg-none ml-2 mt-1" type="button" data-toggle="collapse" data-target="#main-nav" aria-expanded="true" aria-controls="main-nav"><i class="fas fa-bars"></i><span class="sr-only">Show table of contents</span></button>
+    </div>
+
+    <div id="main-nav" class="collapse-lg">
+      <form role="search">
+        <input id="search" class="form-control" type="search" placeholder="Search" aria-label="Search">
+</form>
+
+      <nav aria-label="Table of contents"><h2>Table of contents</h2>
+        <ul class="book-toc list-unstyled">
+<li><a class="" href="index.html"><span class="header-section-number">1</span> Introduction</a></li>
+<li><a class="" href="notation.html"><span class="header-section-number">2</span> Notation conventions</a></li>
+<li><a class="" href="sdmtmb-model-structure.html"><span class="header-section-number">3</span> sdmTMB model structure</a></li>
+<li><a class="" href="gaussian-random-fields.html"><span class="header-section-number">4</span> Gaussian random fields</a></li>
+<li><a class="active" href="observation-model-families.html"><span class="header-section-number">5</span> Observation model families</a></li>
+<li><a class="" href="optimization.html"><span class="header-section-number">6</span> Optimization</a></li>
+<li><a class="" href="references.html">References</a></li>
+</ul>
+
+        <div class="book-extra">
+          
+        </div>
+      </nav>
+</div>
+  </header><main class="col-sm-12 col-md-9 col-lg-7" id="content"><div id="observation-model-families" class="section level1" number="5">
+<h1>
+<span class="header-section-number">5</span> Observation model families<a class="anchor" aria-label="anchor" href="#observation-model-families"><i class="fas fa-link"></i></a>
+</h1>
+<p>Here we describe the main observation families that are available in sdmTMB and comment on their parametrization, statistical properties, utility, and code representation in sdmTMB.</p>
+<div id="binomial" class="section level2" number="5.1">
+<h2>
+<span class="header-section-number">5.1</span> Binomial<a class="anchor" aria-label="anchor" href="#binomial"><i class="fas fa-link"></i></a>
+</h2>
+<p><span class="math display">\[
+\operatorname{Binomial} \left(N, \mu \right)
+\]</span>
+where <span class="math inline">\(N\)</span> is the size or number of trials, and <span class="math inline">\(\mu\)</span> is the probability of success for each trial.
+If <span class="math inline">\(N = 1\)</span>, the distribution becomes the Bernoulli distribution.
+Internally, the distribution is parameterized as the <a href="https://kaskr.github.io/adcomp/group__R__style__distribution.html#gaecb5a18095a320b42e2d20c4b120f5f5">robust
+version</a> in TMB, which is numerically stable when probabilities approach 0 or 1.
+Following the structure of <code><a href="https://rdrr.io/r/stats/glm.html">stats::glm()</a></code>, lme4, and glmmTMB, a binomial family can be specified in one of 4 ways:</p>
+<ol style="list-style-type: decimal">
+<li>the response may be a factor (and the model classifies the first level versus all others)</li>
+<li>the response may be binomial (0/1)</li>
+<li>the response can be a matrix of form <code>cbind(success, failure)</code>, or</li>
+<li>the response may be the observed proportions, and the <code>weights</code> argument is used to specify the Binomial size (<span class="math inline">\(N\)</span>) parameter (<code>probabilty ~ ..., weights = N</code>).</li>
+</ol>
+<p>Code defined <a href="https://kaskr.github.io/adcomp/group__R__style__distribution.html#gaee11f805f02bc1febc6d7bf0487671be">within TMB</a>.</p>
+<p>Example: <code>family = binomial(link = "logit")</code></p>
+</div>
+<div id="beta" class="section level2" number="5.2">
+<h2>
+<span class="header-section-number">5.2</span> Beta<a class="anchor" aria-label="anchor" href="#beta"><i class="fas fa-link"></i></a>
+</h2>
+<p><span class="math display">\[
+\operatorname{Beta} \left(\mu \phi, (1 - \mu) \phi \right)
+\]</span>
+where <span class="math inline">\(\mu\)</span> is the mean and <span class="math inline">\(\phi\)</span> is a precision parameter.
+This parametrization follows <span class="citation">Ferrari and Cribari-Neto (<a href="references.html#ref-ferrari2004" role="doc-biblioref">2004</a>)</span> and the betareg R package <span class="citation">(<a href="references.html#ref-cribari-neto2010" role="doc-biblioref">Cribari-Neto and Zeileis 2010</a>)</span>.
+The variance is <span class="math inline">\(\mu (1 - \mu) / (\phi + 1)\)</span>.</p>
+<p>Code defined <a href="https://kaskr.github.io/adcomp/group__R__style__distribution.html#ga5324c83759d5211c7c2fbbad37fa8e59">within TMB</a>.</p>
+<p>Example: <code>family = Beta(link = "logit")</code></p>
+</div>
+<div id="gamma" class="section level2" number="5.3">
+<h2>
+<span class="header-section-number">5.3</span> Gamma<a class="anchor" aria-label="anchor" href="#gamma"><i class="fas fa-link"></i></a>
+</h2>
+<p><span class="math display">\[
+\operatorname{Gamma} \left( \phi, \frac{\mu}{\phi}  \right)
+\]</span>
+where <span class="math inline">\(\phi\)</span> represents the Gamma shape and <span class="math inline">\(\mu / \phi\)</span> represents the scale.
+The mean is <span class="math inline">\(\mu\)</span> and variance is <span class="math inline">\(\mu \cdot \phi^2\)</span>.</p>
+<p>Code defined <a href="https://kaskr.github.io/adcomp/group__R__style__distribution.html#gab0e2205710a698ad6a0ed39e0652c9a3">within TMB</a>.</p>
+<p>Example: <code>family = Gamma(link = "log")</code></p>
+</div>
+<div id="gaussian" class="section level2" number="5.4">
+<h2>
+<span class="header-section-number">5.4</span> Gaussian<a class="anchor" aria-label="anchor" href="#gaussian"><i class="fas fa-link"></i></a>
+</h2>
+<p><span class="math display">\[
+\operatorname{Normal} \left( \mu, \phi^2 \right)
+\]</span>
+where <span class="math inline">\(\mu\)</span> is the mean and <span class="math inline">\(\phi\)</span> is the standard deviation.
+The variance is <span class="math inline">\(\phi^2\)</span>.</p>
+<p>Example: <code>family = Gaussian(link = "identity")</code></p>
+<p>Code defined <a href="https://kaskr.github.io/adcomp/dnorm_8hpp.html">within TMB</a>.</p>
+</div>
+<div id="lognormal" class="section level2" number="5.5">
+<h2>
+<span class="header-section-number">5.5</span> Lognormal<a class="anchor" aria-label="anchor" href="#lognormal"><i class="fas fa-link"></i></a>
+</h2>
+<!-- \operatorname{Lognormal} \left( \log \mu - \frac{\phi^2}{2}, \phi^2 \right) -->
+<p>sdmTMB uses the bias-corrected lognormal distribution where <span class="math inline">\(\phi\)</span> represents the standard deviation in log-space:</p>
+<p><span class="math display">\[
+\operatorname{Lognormal} \left( \log \mu - \frac{\phi^2}{2}, \phi^2 \right).
+\]</span>
+Because of the bias correction, <span class="math inline">\(\mathbb{E}[y] = \mu\)</span> and <span class="math inline">\(\mathrm{Var}[\log y] = \phi^2\)</span>.</p>
+<p>Code defined <a href="https://github.com/pbs-assess/sdmTMB/blob/18a39eabc111e2179fa589f942c8820d87ad10df/src/utils.h#L47-L54">within sdmTMB</a> based on the TMB <code><a href="https://rdrr.io/r/stats/Normal.html">dnorm()</a></code> normal density.</p>
+<p>Example: <code>family = lognormal(link = "log")</code></p>
+</div>
+<div id="negative-binomial-1-nb1" class="section level2" number="5.6">
+<h2>
+<span class="header-section-number">5.6</span> Negative Binomial 1 (NB1)<a class="anchor" aria-label="anchor" href="#negative-binomial-1-nb1"><i class="fas fa-link"></i></a>
+</h2>
+<p><span class="math display">\[
+\operatorname{NB1} \left( \mu, \phi \right)
+\]</span></p>
+<p>where <span class="math inline">\(\mu\)</span> is the mean and <span class="math inline">\(\phi\)</span> is the dispersion parameter.
+The variance scales linearly with the mean <span class="math inline">\(\mathrm{Var}[y] = \mu + \mu / \phi\)</span> <span class="citation">(<a href="references.html#ref-hilbe2011" role="doc-biblioref">Hilbe 2011</a>)</span>.
+Internally, the distribution is parameterized as the <a href="https://kaskr.github.io/adcomp/group__R__style__distribution.html#gaa23e3ede4669d941b0b54314ed42a75c">robust version</a> in TMB.</p>
+<p>Code defined <a href="https://github.com/pbs-assess/sdmTMB/blob/18a39eabc111e2179fa589f942c8820d87ad10df/src/sdmTMB.cpp#L577-L582">within sdmTMB</a> based on NB2 and borrowed from glmmTMB.</p>
+<p>Example: <code>family = nbinom1(link = "log")</code></p>
+</div>
+<div id="negative-binomial-2-nb2" class="section level2" number="5.7">
+<h2>
+<span class="header-section-number">5.7</span> Negative Binomial 2 (NB2)<a class="anchor" aria-label="anchor" href="#negative-binomial-2-nb2"><i class="fas fa-link"></i></a>
+</h2>
+<p><span class="math display">\[
+\operatorname{NB2} \left( \mu, \phi \right)
+\]</span></p>
+<p>where <span class="math inline">\(\mu\)</span> is the mean and <span class="math inline">\(\phi\)</span> is the dispersion parameter.
+The variance scales quadratically with the mean <span class="math inline">\(\mathrm{Var}[y] = \mu + \mu^2 / \phi\)</span> <span class="citation">(<a href="references.html#ref-hilbe2011" role="doc-biblioref">Hilbe 2011</a>)</span>.
+The NB2 parametrization is more commonly seen in ecology than the NB1.
+Internally, the distribution is parameterized as the <a href="https://kaskr.github.io/adcomp/group__R__style__distribution.html#gaa23e3ede4669d941b0b54314ed42a75c">robust version</a> in TMB.</p>
+<p>Code defined <a href="https://kaskr.github.io/adcomp/group__R__style__distribution.html#ga76266c19046e04b651fce93aa0810351">within TMB</a>.</p>
+<p>Example: <code>family = nbinom2(link = "log")</code></p>
+</div>
+<div id="poisson" class="section level2" number="5.8">
+<h2>
+<span class="header-section-number">5.8</span> Poisson<a class="anchor" aria-label="anchor" href="#poisson"><i class="fas fa-link"></i></a>
+</h2>
+<p><span class="math display">\[
+\operatorname{Poisson} \left( \mu \right)
+\]</span>
+where <span class="math inline">\(\mu\)</span> represents the mean and <span class="math inline">\(\mathrm{Var}[y] = \mu\)</span>.</p>
+<p>Code defined <a href="https://kaskr.github.io/adcomp/group__R__style__distribution.html#gaa1ed15503e1441a381102a8c4c9baaf1">within TMB</a>.</p>
+<p>Example: <code>family = poisson(link = "log")</code></p>
+</div>
+<div id="student-t" class="section level2" number="5.9">
+<h2>
+<span class="header-section-number">5.9</span> Student-t<a class="anchor" aria-label="anchor" href="#student-t"><i class="fas fa-link"></i></a>
+</h2>
+<p><span class="math display">\[
+\operatorname{Student-t} \left( \mu, \phi, \nu \right)
+\]</span></p>
+<p>where <span class="math inline">\(\nu\)</span>, the degrees of freedom (<code>df</code>), is a user-supplied fixed parameter. Lower values of <span class="math inline">\(\nu\)</span> result in heavier tails compared to the Gaussian distribution. Above approximately <code>df = 20</code>, the distribution becomes very similar to the Gaussian. The Student-t distribution with a low degrees of freedom (e.g., <span class="math inline">\(\nu \le 7\)</span>) can be helpful for modelling data that would otherwise be suitable for Gaussian but needs an approach that is robust to outliers <span class="citation">(e.g., <a href="references.html#ref-anderson2017c" role="doc-biblioref">Anderson et al. 2017</a>)</span>.</p>
+<p>Code defined <a href="https://github.com/pbs-assess/sdmTMB/blob/18a39eabc111e2179fa589f942c8820d87ad10df/src/utils.h#L37-L45">within sdmTMB</a> based on the <code><a href="https://rdrr.io/r/stats/TDist.html">dt()</a></code> distribution in TMB.</p>
+<p>Example: <code>family = student(link = "log", df = 7)</code></p>
+</div>
+<div id="tweedie" class="section level2" number="5.10">
+<h2>
+<span class="header-section-number">5.10</span> Tweedie<a class="anchor" aria-label="anchor" href="#tweedie"><i class="fas fa-link"></i></a>
+</h2>
+<p><span class="math display">\[
+\operatorname{Tweedie} \left(\mu, p, \phi \right), \: 1 &lt; p &lt; 2
+\]</span></p>
+<p>where <span class="math inline">\(\mu\)</span> is the mean, <span class="math inline">\(p\)</span> is the power parameter constrained between 1 and 2, and <span class="math inline">\(\phi\)</span> is the dispersion parameter.
+The Tweedie distribution can be helpful for modelling data that are positive and continuous but also contain zeros.</p>
+<p>Internally, <span class="math inline">\(p\)</span> is transformed from <span class="math inline">\(\mathrm{logit}^{-1} (\texttt{thetaf}) + 1\)</span> to constrain it between 1 and 2 and is estimated as an unconstrained variable.</p>
+<p>The <a href="https://kaskr.github.io/adcomp/tweedie_8cpp_source.html">source code</a> is implemented as in the <a href="https://CRAN.R-project.org/package=cplm">cplm</a> package <span class="citation">(<a href="references.html#ref-zhang2013a" role="doc-biblioref">Zhang 2013</a>)</span> and is based on <span class="citation">Dunn and Smyth (<a href="references.html#ref-dunn2005" role="doc-biblioref">2005</a>)</span>. The TMB version is defined <a href="https://kaskr.github.io/adcomp/group__R__style__distribution.html#ga262f3c2d1cf36f322a62d902a608aae0">here</a>.</p>
+<p>Example: <code>family = tweedie(link = "log")</code></p>
+
+</div>
+</div>
+  <div class="chapter-nav">
+<div class="prev"><a href="gaussian-random-fields.html"><span class="header-section-number">4</span> Gaussian random fields</a></div>
+<div class="next"><a href="optimization.html"><span class="header-section-number">6</span> Optimization</a></div>
+</div></main><div class="col-md-3 col-lg-2 d-none d-md-block sidebar sidebar-chapter">
+    <nav id="toc" data-toggle="toc" aria-label="On this page"><h2>On this page</h2>
+      <ul class="nav navbar-nav">
+<li><a class="nav-link" href="#observation-model-families"><span class="header-section-number">5</span> Observation model families</a></li>
+<li><a class="nav-link" href="#binomial"><span class="header-section-number">5.1</span> Binomial</a></li>
+<li><a class="nav-link" href="#beta"><span class="header-section-number">5.2</span> Beta</a></li>
+<li><a class="nav-link" href="#gamma"><span class="header-section-number">5.3</span> Gamma</a></li>
+<li><a class="nav-link" href="#gaussian"><span class="header-section-number">5.4</span> Gaussian</a></li>
+<li><a class="nav-link" href="#lognormal"><span class="header-section-number">5.5</span> Lognormal</a></li>
+<li><a class="nav-link" href="#negative-binomial-1-nb1"><span class="header-section-number">5.6</span> Negative Binomial 1 (NB1)</a></li>
+<li><a class="nav-link" href="#negative-binomial-2-nb2"><span class="header-section-number">5.7</span> Negative Binomial 2 (NB2)</a></li>
+<li><a class="nav-link" href="#poisson"><span class="header-section-number">5.8</span> Poisson</a></li>
+<li><a class="nav-link" href="#student-t"><span class="header-section-number">5.9</span> Student-t</a></li>
+<li><a class="nav-link" href="#tweedie"><span class="header-section-number">5.10</span> Tweedie</a></li>
+</ul>
+
+      <div class="book-extra">
+        <ul class="list-unstyled">
+          
+        </ul>
+</div>
+    </nav>
+</div>
+
+</div>
+</div> <!-- .container -->
+
+<footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
+
+  <div class="col-12 col-md-6 mt-3">
+    <p>"<strong>sdmTMB Manual</strong>" was written by Sean C. Anderson, …. It was last built on 2022-11-01.</p>
+  </div>
+
+  <div class="col-12 col-md-6 mt-3">
+    <p>This book was built by the <a class="text-light" href="https://bookdown.org">bookdown</a> R package.</p>
+  </div>
+
+</div></div>
+</footer><!-- dynamically load mathjax for compatibility with self-contained --><script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script><script type="text/x-mathjax-config">const popovers = document.querySelectorAll('a.footnote-ref[data-toggle="popover"]');
+for (let popover of popovers) {
+  const div = document.createElement('div');
+  div.setAttribute('style', 'position: absolute; top: 0, left:0; width:0, height:0, overflow: hidden; visibility: hidden;');
+  div.innerHTML = popover.getAttribute('data-content');
+
+  var has_math = div.querySelector("span.math");
+  if (has_math) {
+    document.body.appendChild(div);
+    MathJax.Hub.Queue(["Typeset", MathJax.Hub, div]);
+    MathJax.Hub.Queue(function() {
+      popover.setAttribute('data-content', div.innerHTML);
+      document.body.removeChild(div);
+    })
+  }
+}
+</script>
+</body>
+</html>
